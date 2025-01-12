@@ -1,102 +1,30 @@
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <title>Command Console</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        .command-form {
-            margin: 20px 0;
-        }
-        input[type="text"] {
-            width: 70%;
-            padding: 8px;
-            margin-right: 10px;
-        }
-        button {
-            padding: 8px 15px;
-            background: #007bff;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-        button:hover {
-            background: #0056b3;
-        }
-        #status {
-            margin-top: 20px;
-            padding: 10px;
-            border-radius: 4px;
-        }
-        .success {
-            background: #d4edda;
-            color: #155724;
-        }
-        .error {
-            background: #f8d7da;
-            color: #721c24;
-        }
-    </style>
-</head>
-<body>
-    <h1>Command Console</h1>
-    <p>Enter JavaScript commands to execute in connected browsers.</p>
-    
-    <div class="command-form">
-        <input type="text" id="command" placeholder="Enter JavaScript command (e.g., alert('hello'))">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Command Console</h1>
+      <p>Enter JavaScript commands to execute in connected browsers.</p>
+
+      <div class="command-form">
+        <input
+          type="text"
+          id="command"
+          placeholder="Enter JavaScript command (e.g., alert('hello'))"
+        />
         <button onclick="sendCommand()">Send</button>
+      </div>
+
+      <div id="status"></div>
     </div>
-    
-    <div id="status"></div>
 
-    <script>
-        async function sendCommand() {
-            const commandInput = document.getElementById('command');
-            const statusDiv = document.getElementById('status');
-            const command = commandInput.value;
-
-            if (!command) {
-                showStatus('Please enter a command', false);
-                return;
-            }
-
-            try {
-                const response = await fetch('/command', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ command })
-                });
-
-                const data = await response.json();
-                showStatus(data.message, true);
-                commandInput.value = '';
-            } catch (error) {
-                showStatus('Error sending command: ' + error, false);
-            }
-        }
-
-        function showStatus(message, success) {
-            const statusDiv = document.getElementById('status');
-            statusDiv.textContent = message;
-            statusDiv.className = success ? 'success' : 'error';
-            setTimeout(() => {
-                statusDiv.textContent = '';
-                statusDiv.className = '';
-            }, 3000);
-        }
-
-        // Allow Enter key to submit
-        document.getElementById('command').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                sendCommand();
-            }
-        });
-    </script>
-</body>
+    <script src="script.js"></script>
+  </body>
 </html>
